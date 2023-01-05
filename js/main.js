@@ -90,12 +90,12 @@
           <input class="form-input" name="name" id="name" type="text" required>
         </div>
         <div class="form-group">
-          <label class="form-label" for="name">Фамилия:</label>
-          <input class="form-input" name="name" id="name" type="text" required>
+          <label class="form-label" for="sirname">Фамилия:</label>
+          <input class="form-input" name="sirname" id="sirname" type="text" required>
         </div>
         <div class="form-group">
-          <label class="form-label" for="name">Телефон:</label>
-          <input class="form-input" name="name" id="name" type="text" required>
+          <label class="form-label" for="phone">Телефон:</label>
+          <input class="form-input" name="phone" id="phone" type="number" required>
         </div>
       `);
   };

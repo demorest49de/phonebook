@@ -34,12 +34,38 @@
     return main;
   };
 
+  const createButtonsGroup = params => {
+    const btnWrapper = document.createElement('div');
+    btnWrapper.classList.add('btn-wrapper');
+
+    const btns = params.map({});
+
+    return {
+      btnWrapper,
+    };
+  };
+
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
     const header = createHeader();
     const logo = createLogo(title);
+    const main = createMain();
+    const buttonsGroup = createButtonsGroup([
+      {
+        className: 'btn btn-primary',
+        type: 'button',
+        text: 'Добавить',
+      },
+      {
+        className: 'btn btn-danger',
+        type: 'button',
+        text: 'Удалить',
+      },
+    ]);
+
     header.headerContainer.append(logo);
-    app.append(header);
+    main.mainContainer.append(buttonsGroup.btnWrapper);
+    app.append(header, main);
   };
 
   window.phoneBookInit = init;

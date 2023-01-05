@@ -98,6 +98,22 @@
           <input class="form-input" name="phone" id="phone" type="number" required>
         </div>
       `);
+
+
+    const buttonsGroup = createButtonsGroup([
+      {
+        className: 'btn btn-primary mr-3',
+        type: 'submit',
+        text: 'Добавить',
+      },
+      {
+        className: 'btn btn-danger',
+        type: 'reset',
+        text: 'Отмена',
+      },
+    ]);
+
+    form.append(...buttonsGroup.btns);//31:54
   };
 
   const init = (selectorApp, title) => {
@@ -118,6 +134,7 @@
       },
     ]);
     const table = createTable();
+    const form = createForm();
 
     header.headerContainer.append(logo);
     main.mainContainer.append(buttonsGroup.btnWrapper, table);

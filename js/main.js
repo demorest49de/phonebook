@@ -46,7 +46,9 @@
 
       return button;
     });
+
     btnWrapper.append(...btns);
+
     return {
       btnWrapper,
       btns,
@@ -83,7 +85,7 @@
     form.classList.add('form');
     form.insertAdjacentHTML('beforeend',
       `
-        <button class="close"></button>
+        <button class="close" type="button"></button>
         <h2 class="form-title">Добавить контакт</h2>
         <div class="form-group">
           <label class="form-label" for="name">Имя:</label>
@@ -91,11 +93,13 @@
         </div>
         <div class="form-group">
           <label class="form-label" for="sirname">Фамилия:</label>
-          <input class="form-input" name="sirname" id="sirname" type="text" required>
+          <input class="form-input" name="sirname" 
+          id="sirname" type="text" required>
         </div>
         <div class="form-group">
           <label class="form-label" for="phone">Телефон:</label>
-          <input class="form-input" name="phone" id="phone" type="number" required>
+          <input class="form-input" name="phone" 
+          id="phone" type="number" required>
         </div>
       `);
 
@@ -113,11 +117,17 @@
       },
     ]);
 
-    form.append(...buttonsGroup.btns);//31:54
+    form.append(...buttonsGroup.btns);
+    overlay.append(form);
+
+    return {
+      overlay,
+      form,
+      btns: buttonsGroup,
+    };
   };
 
-  const init = (selectorApp, title) => {
-    const app = document.querySelector(selectorApp);
+  const renderPhonebook = (app, title) => {
     const header = createHeader();
     const logo = createLogo(title);
     const main = createMain();
@@ -135,10 +145,50 @@
     ]);
     const table = createTable();
     const form = createForm();
-
+    console.log('form: ', form);
     header.headerContainer.append(logo);
-    main.mainContainer.append(buttonsGroup.btnWrapper, table);
+    main.mainContainer.append(buttonsGroup.btnWrapper, table, form.overlay);
     app.append(header, main);
+
+    return {
+      list: table.tbody,
+    };
+  };
+
+  const createRow = ({name: firstName, surname, phone}) => {
+    console.log(dataObj);
+    const tr = document.createElement('tr');
+
+    const tdDel = document.createElement('td');
+    tdDel.classList.add('delete');
+    const buttonDel = document.createElement('button');
+    buttonDel.classList.add('del-icon');
+    tdDel.append(buttonDel);
+
+    const tdName = document.createElement('td');
+    tdName.textContent = firstName;
+    const tdSurname = document.createElement('td');
+    tdSurname.textContent = surname;
+    const tdPhone = document.createElement('td');
+    tdPhone.textContent = phone;
+
+    tr.append(tdDel, tdName, tdSurname, tdPhone);
+    return tr;
+  };
+
+  const renderContacts = (elem, data) => {
+    const allRow = data.map(createRow);
+    elem.append(...allRow);
+  };
+
+  const init = (selectorApp, title) => {
+    const app = document.querySelector(selectorApp);
+    const phonebook = renderPhonebook(app, title);
+    console.log('phonebook: ', phonebook);
+
+    const {list} = phonebook;
+
+    renderContacts(phonebook.list, window.data);
   };
 
   window.phoneBookInit = init;

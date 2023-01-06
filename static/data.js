@@ -1,5 +1,5 @@
 'use strict';
-const data = [
+window.data = [
   {
     name: 'Иван',
     surname: 'Петров',

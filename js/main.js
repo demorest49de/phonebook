@@ -171,6 +171,7 @@
     tdSurname.textContent = surname;
 
     const tdPhone = document.createElement('td');
+    tdPhone.classList.add('phoneNumber')
     const phoneLink = document.createElement('a');
 
     phoneLink.href = `tel:${phone}`;

@@ -22,6 +22,10 @@
     display: none;
 }
 
+.phoneNumber{
+    color: #2B84EC;
+}
+
 .del-icon {
     display: block;
     width: 10px;

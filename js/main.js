@@ -61,7 +61,7 @@
     table.classList.add('table', 'table-striped');
     const thead = document.createElement('thead');
     thead.insertAdjacentHTML('beforeend',
-      `
+        `
       <tr>
       <th class="delete">Удалить</th>
       <th>Имя</th>
@@ -84,7 +84,7 @@
     const form = document.createElement('form');
     form.classList.add('form');
     form.insertAdjacentHTML('beforeend',
-      `
+        `
         <button class="close" type="button"></button>
         <h2 class="form-title">Добавить контакт</h2>
         <div class="form-group">
@@ -156,7 +156,6 @@
   };
 
   const createRow = ({name: firstName, surname, phone}) => {
-    console.log(dataObj);
     const tr = document.createElement('tr');
 
     const tdDel = document.createElement('td');
@@ -167,12 +166,20 @@
 
     const tdName = document.createElement('td');
     tdName.textContent = firstName;
+
     const tdSurname = document.createElement('td');
     tdSurname.textContent = surname;
+
     const tdPhone = document.createElement('td');
-    tdPhone.textContent = phone;
+    const phoneLink = document.createElement('a');
+
+    phoneLink.href = `tel:${phone}`;
+    phoneLink.textContent = phone;
+
+    tdPhone.append(phoneLink);
 
     tr.append(tdDel, tdName, tdSurname, tdPhone);
+
     return tr;
   };
 
@@ -188,7 +195,8 @@
 
     const {list} = phonebook;
 
-    renderContacts(phonebook.list, window.data);
+    renderContacts(list, window.data);
+    // Функционал
   };
 
   window.phoneBookInit = init;

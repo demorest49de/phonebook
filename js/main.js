@@ -61,7 +61,7 @@
     table.classList.add('table', 'table-striped');
     const thead = document.createElement('thead');
     thead.insertAdjacentHTML('beforeend',
-        `
+      `
       <tr>
       <th class="delete">Удалить</th>
       <th>Имя</th>
@@ -84,7 +84,7 @@
     const form = document.createElement('form');
     form.classList.add('form');
     form.insertAdjacentHTML('beforeend',
-        `
+      `
         <button class="close" type="button"></button>
         <h2 class="form-title">Добавить контакт</h2>
         <div class="form-group">
@@ -127,6 +127,18 @@
     };
   };
 
+  const createFooter = (title) => {
+    const footer = document.createElement('div');
+    const footerContainer = createContainer();
+    footer.append(footerContainer);
+    footer.footerContainer = footerContainer;
+    footer.classList.add('footer');
+    const pText = document.createElement('p');
+    pText.textContent = `Все права защищены ©${title}`;
+    footer.append(pText);
+    return footer;
+  };
+
   const renderPhonebook = (app, title) => {
     const header = createHeader();
     const logo = createLogo(title);
@@ -145,10 +157,10 @@
     ]);
     const table = createTable();
     const form = createForm();
-    console.log('form: ', form);
+    const footer = createFooter(title);
     header.headerContainer.append(logo);
     main.mainContainer.append(buttonsGroup.btnWrapper, table, form.overlay);
-    app.append(header, main);
+    app.append(header, main, footer);
 
     return {
       list: table.tbody,
@@ -171,7 +183,7 @@
     tdSurname.textContent = surname;
 
     const tdPhone = document.createElement('td');
-    tdPhone.classList.add('phoneNumber')
+    tdPhone.classList.add('phoneNumber');
     const phoneLink = document.createElement('a');
 
     phoneLink.href = `tel:${phone}`;

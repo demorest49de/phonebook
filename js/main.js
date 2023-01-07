@@ -61,7 +61,7 @@
     table.classList.add('table', 'table-striped');
     const thead = document.createElement('thead');
     thead.insertAdjacentHTML('beforeend',
-      `
+        `
       <tr>
       <th class="delete">Удалить</th>
       <th>Имя</th>
@@ -84,7 +84,7 @@
     const form = document.createElement('form');
     form.classList.add('form');
     form.insertAdjacentHTML('beforeend',
-      `
+        `
         <button class="close" type="button"></button>
         <h2 class="form-title">Добавить контакт</h2>
         <div class="form-group">
@@ -167,6 +167,7 @@
       logo,
       btnAdd: buttonsGroup.btns[0],
       formOverlay: form.overlay,
+      form: form.form,
     };
   };
 
@@ -218,44 +219,39 @@
     });
   };
 
-  const bubblingCapturing = () => {
-    const btnAdd = document.querySelector('.js-add');
-    const btnWrapper = document.querySelector('.btn-wrapper');
-    const container = document.querySelector('.container');
-    const main = document.querySelector('main');
-    const app = document.querySelector('#app');
-    const body = document.querySelector('body');
-
-    main.addEventListener('click', () => {      console.log(': ', 'main');    });
-    app.addEventListener('click', () => {      console.log(': ', 'app');    });
-    window.addEventListener('click', () => {      console.log(': ', 'window');    });
-    document.addEventListener('click', () => {      console.log(': ', 'document');    });
-    document.documentElement.addEventListener('click', () => {      console.log(': ', 'html');    });
-    body.addEventListener('click', () => {      console.log(': ', 'body');    });
-    btnAdd.addEventListener('click', () => {      console.log(': ', 'btnAdd');    });
-    btnWrapper.addEventListener('click', () => {      console.log(': ', 'btnWrapper');    });
-  };
-
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
     const phonebook = renderPhonebook(app, title);
     console.log('phonebook: ', phonebook);
 
-    const {list, logo, btnAdd, formOverlay} = phonebook;
+    const {list, logo, btnAdd, formOverlay, form} = phonebook;
 
     // Функционал
 
     const allRow = renderContacts(list, window.data);
     hoverRow(allRow, logo);
 
-    const objEvent = {
-      handleEvent() {
-        formOverlay.classList.add('is-visible');
-      },
-    };
+    btnAdd.addEventListener('click', () => {
+      formOverlay.classList.add('is-visible');
+    });
 
-    btnAdd.addEventListener('click', objEvent);
-    bubblingCapturing();
+    form.addEventListener('click', event => {
+      event.stopPropagation();
+    });
+
+    formOverlay.addEventListener('click', () => {
+      formOverlay.classList.remove('is-visible');
+    });
+
+    document.addEventListener('touchstart', (e) => {
+      console.log('touchstart: ', e.type, e);
+    });
+    document.addEventListener('touchmove', (e) => {
+      console.log('touchmove: ', e.type);
+    });
+    document.addEventListener('touchend', (e) => {
+      console.log('touchend: ', e.type);
+    });
   };
 
   window.phoneBookInit = init;

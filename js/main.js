@@ -164,6 +164,7 @@
 
     return {
       list: table.tbody,
+      logo,
     };
   };
 
@@ -185,7 +186,7 @@
     const tdPhone = document.createElement('td');
     tdPhone.classList.add('phoneNumber');
     const phoneLink = document.createElement('a');
-
+    tr.phoneLink = phoneLink;
     phoneLink.href = `tel:${phone}`;
     phoneLink.textContent = phone;
 
@@ -199,6 +200,20 @@
   const renderContacts = (elem, data) => {
     const allRow = data.map(createRow);
     elem.append(...allRow);
+    return allRow;
+  };
+
+  const hoverRow = (allRow, logo) => {
+    const text = logo.textContent;
+
+    allRow.forEach(contact => {
+      contact.addEventListener('mouseenter', () => {
+        logo.textContent = contact.phoneLink.textContent;
+      });
+      contact.addEventListener('mouseleave', () => {
+        logo.textContent = text;
+      });
+    });
   };
 
   const init = (selectorApp, title) => {
@@ -206,10 +221,12 @@
     const phonebook = renderPhonebook(app, title);
     console.log('phonebook: ', phonebook);
 
-    const {list} = phonebook;
+    const {list, logo} = phonebook;
 
-    renderContacts(list, window.data);
     // Функционал
+
+    const allRow = renderContacts(list, window.data);
+    hoverRow(allRow, logo);
   };
 
   window.phoneBookInit = init;

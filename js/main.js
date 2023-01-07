@@ -135,7 +135,7 @@
     footer.classList.add('footer');
     const pText = document.createElement('p');
     pText.textContent = `Все права защищены ©${title}`;
-    footer.append(pText);
+    footer.footerContainer.append(pText);
     return footer;
   };
 

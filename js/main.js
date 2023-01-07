@@ -128,7 +128,7 @@
   };
 
   const createFooter = (title) => {
-    const footer = document.createElement('div');
+    const footer = document.createElement('footer');
     const footerContainer = createContainer();
     footer.append(footerContainer);
     footer.footerContainer = footerContainer;

@@ -145,7 +145,7 @@
     const main = createMain();
     const buttonsGroup = createButtonsGroup([
       {
-        className: 'btn btn-primary mr-3',
+        className: 'btn btn-primary mr-3 js-add',
         type: 'button',
         text: 'Добавить',
       },
@@ -165,6 +165,8 @@
     return {
       list: table.tbody,
       logo,
+      btnAdd: buttonsGroup.btns[0],
+      formOverlay: form.overlay,
     };
   };
 
@@ -216,17 +218,44 @@
     });
   };
 
+  const bubblingCapturing = () => {
+    const btnAdd = document.querySelector('.js-add');
+    const btnWrapper = document.querySelector('.btn-wrapper');
+    const container = document.querySelector('.container');
+    const main = document.querySelector('main');
+    const app = document.querySelector('#app');
+    const body = document.querySelector('body');
+
+    main.addEventListener('click', () => {      console.log(': ', 'main');    });
+    app.addEventListener('click', () => {      console.log(': ', 'app');    });
+    window.addEventListener('click', () => {      console.log(': ', 'window');    });
+    document.addEventListener('click', () => {      console.log(': ', 'document');    });
+    document.documentElement.addEventListener('click', () => {      console.log(': ', 'html');    });
+    body.addEventListener('click', () => {      console.log(': ', 'body');    });
+    btnAdd.addEventListener('click', () => {      console.log(': ', 'btnAdd');    });
+    btnWrapper.addEventListener('click', () => {      console.log(': ', 'btnWrapper');    });
+  };
+
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
     const phonebook = renderPhonebook(app, title);
     console.log('phonebook: ', phonebook);
 
-    const {list, logo} = phonebook;
+    const {list, logo, btnAdd, formOverlay} = phonebook;
 
     // Функционал
 
     const allRow = renderContacts(list, window.data);
     hoverRow(allRow, logo);
+
+    const objEvent = {
+      handleEvent() {
+        formOverlay.classList.add('is-visible');
+      },
+    };
+
+    btnAdd.addEventListener('click', objEvent);
+    bubblingCapturing();
   };
 
   window.phoneBookInit = init;

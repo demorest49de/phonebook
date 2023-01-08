@@ -243,16 +243,5 @@
       formOverlay.classList.remove('is-visible');
     });
 
-    document.addEventListener('touchstart', (e) => {
-      console.log('touchstart: ', e.type, e);
-    });
-    document.addEventListener('touchmove', (e) => {
-      console.log('touchmove: ', e.type);
-    });
-    document.addEventListener('touchend', (e) => {
-      console.log('touchend: ', e.type);
-    });
-  };
-
   window.phoneBookInit = init;
 }

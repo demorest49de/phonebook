@@ -242,6 +242,7 @@
     formOverlay.addEventListener('click', () => {
       formOverlay.classList.remove('is-visible');
     });
+  };
 
   window.phoneBookInit = init;
 }

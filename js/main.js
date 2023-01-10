@@ -61,7 +61,7 @@
     table.classList.add('table', 'table-striped');
     const thead = document.createElement('thead');
     thead.insertAdjacentHTML('beforeend',
-        `
+      `
       <tr>
       <th class="delete">Удалить</th>
       <th>Имя</th>
@@ -84,7 +84,7 @@
     const form = document.createElement('form');
     form.classList.add('form');
     form.insertAdjacentHTML('beforeend',
-        `
+      `
         <button class="close" type="button"></button>
         <h2 class="form-title">Добавить контакт</h2>
         <div class="form-group">
@@ -222,8 +222,6 @@
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
     const phonebook = renderPhonebook(app, title);
-    console.log('phonebook: ', phonebook);
-
     const {list, logo, btnAdd, formOverlay, form} = phonebook;
 
     // Функционал
@@ -240,6 +238,11 @@
     });
 
     formOverlay.addEventListener('click', () => {
+      formOverlay.classList.remove('is-visible');
+    });
+
+    const btnFormClose = document.querySelector('button.close');
+    btnFormClose.addEventListener('click', () => {
       formOverlay.classList.remove('is-visible');
     });
   };

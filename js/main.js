@@ -43,7 +43,6 @@
       button.type = type;
       button.textContent = text;
 
-
       return button;
     });
 
@@ -53,6 +52,15 @@
       btnWrapper,
       btns,
     };
+  };
+
+  const createSingleButton = ({className, type, text}) => {
+    const button = document.createElement('button');
+    button.className = className;
+    button.type = type;
+    button.textContent = text;
+
+    return button;
   };
 
   const createTable = () => {
@@ -162,6 +170,7 @@
     main.mainContainer.append(buttonsGroup.btnWrapper, table, form.overlay);
     app.append(header, main, footer);
 
+
     return {
       list: table.tbody,
       logo,
@@ -177,6 +186,7 @@
     const tdDel = document.createElement('td');
     tdDel.classList.add('delete');
     const buttonDel = document.createElement('button');
+    buttonDel.classList.add('icon');
     buttonDel.classList.add('del-icon');
     tdDel.append(buttonDel);
 
@@ -195,7 +205,20 @@
 
     tdPhone.append(phoneLink);
 
-    tr.append(tdDel, tdName, tdSurname, tdPhone);
+    const editButtonProps =
+      {
+        className: 'icon edit-icon',
+        type: 'button',
+        text: '',
+      };
+
+    const tdEdit = document.createElement('td');
+    const buttonEdit = createSingleButton(editButtonProps);
+    buttonEdit.classList.add('icon');
+    buttonEdit.classList.add('edit-icon');
+    tdEdit.append(buttonEdit);
+
+    tr.append(tdDel, tdName, tdSurname, tdPhone, tdEdit);
 
     return tr;
   };

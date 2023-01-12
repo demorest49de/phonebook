@@ -36,20 +36,38 @@
     display: none;
 }
 
-.phoneNumber{
-    color: #2B84EC;
+tbody{
+    table-layout: fixed;
 }
 
-.del-icon {
+.phoneNumber{
+    color: #2B84EC;
+    width: 180px;
+}
+
+td{
+
+}
+
+.icon{
     display: block;
-    width: 10px;
-    height: 10px;
+    width: 20px;
+    height: 20px;
     border: none;
+    outline: none;
     background-color: transparent;
-    background-image: url("../img/del.svg");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    margin-top: 1px;
+}
+
+.del-icon {
+    background-image: url("../img/del.svg");
+}
+
+.edit-icon{
+    background-image: url("../img/edit.svg");
 }
 
 .delete.is-visible {

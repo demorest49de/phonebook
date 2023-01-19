@@ -177,6 +177,7 @@
       btnAdd: buttonsGroup.btns[0],
       btnDel: buttonsGroup.btns[1],
       formOverlay: form.overlay,
+      form: form.form,
     };
   };
 
@@ -245,7 +246,7 @@
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
     const phonebook = renderPhonebook(app, title);
-    const {list, logo, btnAdd, btnDel, formOverlay} = phonebook;
+    const {list, logo, btnAdd, btnDel, formOverlay, form} = phonebook;
 
     // Функционал
 
@@ -270,22 +271,57 @@
         del.classList.toggle('is-visible');
       });
     });
-    console.log(': ',list);
+
     list.addEventListener('click', e => {
       const target = e.target;
       if (target.closest('.del-icon')) {
         target.closest('.contact').remove();
       }
     });
+    // использование задержек
+    // setTimeout(() => {
+    //   const contact =  createRow({
+    //     name: 'andre',
+    //     surname: 'shevchenko',
+    //     phone: '+79066761878',
+    //   });
+    //   list.append(contact);
+    // }, 2000);
 
-    setTimeout(() => {
-      const contact =  createRow({
-        name: 'andre',
-        surname: 'shevchenko',
-        phone: '+79066761878',
-      });
-      list.append(contact);
-    }, 2000);
+    //стандартное поведение формы после отправки данных на форму происходит перезагрузка страницы
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      //при отправки данных на форму: извл-ние данных из формы, идет запрос на сервер, изменение данных в приложении, внешний вид
+      // отправка данных на сервер по событию клик не верно!
+
+      //получение данных из формы
+      // непправильный способ - не правильный это поулчение данных с формы через queryselector это не правильно - ресурсозатратно и лишний код
+      // правильный 1 способ - через поля по именам
+      // console.log(': ',form.name.value);
+      // console.log(': ',form.sirname.value);
+      // console.log(': ',form.phone.value);
+      // правильный 2 способ - formdata
+      const formData = new FormData(e.target);
+
+      // console.log(': ',formData.get('phone'));
+      //интерировать можно с пом forof foreach или spread оператора
+      console.log(': ', [...formData.entries()]);
+
+      console.log(': ', Object.fromEntries(formData.entries()));
+    });
+
+    form.name.addEventListener('focus', e => {
+      console.warn(': ', e.type, e.target.value);
+    });
+
+    form.name.addEventListener('blur', e => {
+      console.error(': ', e.type, e.target.value);
+    });
+
+    form.name.addEventListener('change', e => {
+      console.log(': ', e.type, e.target.value);
+    });
   };
 
   window.phoneBookInit = init;

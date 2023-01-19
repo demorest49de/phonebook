@@ -270,7 +270,7 @@
         del.classList.toggle('is-visible');
       });
     });
-
+    console.log(': ',list);
     list.addEventListener('click', e => {
       const target = e.target;
       if (target.closest('.del-icon')) {

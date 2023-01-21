@@ -306,22 +306,22 @@
 
       // console.log(': ',formData.get('phone'));
       //интерировать можно с пом forof foreach или spread оператора
-      console.log(': ', [...formData.entries()]);
-
-      console.log(': ', Object.fromEntries(formData.entries()));
+      // console.log(': ', [...formData.entries()]);
+      //
+      // console.log(': ', Object.fromEntries(formData.entries()));
     });
 
-    form.name.addEventListener('focus', e => {
-      console.warn(': ', e.type, e.target.value);
-    });
-
-    form.name.addEventListener('blur', e => {
-      console.error(': ', e.type, e.target.value);
-    });
-
-    form.name.addEventListener('change', e => {
-      console.log(': ', e.type, e.target.value);
-    });
+    // form.name.addEventListener('focus', e => {
+    //   console.warn(': ', e.type, e.target.value);
+    // });
+    //
+    // form.name.addEventListener('blur', e => {
+    //   console.error(': ', e.type, e.target.value);
+    // });
+    //
+    // form.name.addEventListener('change', e => {
+    //   console.log(': ', e.type, e.target.value);
+    // });
   };
 
   window.phoneBookInit = init;

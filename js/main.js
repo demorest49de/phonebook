@@ -349,9 +349,7 @@
       const sortedRows = rows.sort((a, b) => {
         const aText = a.childNodes[column].textContent;
         const bText = b.childNodes[column].textContent;
-        console.log(': ',column);
-        console.log('aText: ', aText);
-        console.log('bText: ', bText);
+
         return aText > bText ? (1 * dirModifier) : (-1 * dirModifier);
       });
 

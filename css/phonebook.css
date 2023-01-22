@@ -36,20 +36,20 @@
     display: none;
 }
 
-tbody{
+tbody {
     table-layout: fixed;
 }
 
-.phoneNumber{
+.phoneNumber {
     color: #2B84EC;
     width: 180px;
 }
 
-td{
+td {
 
 }
 
-.icon{
+.icon {
     display: block;
     width: 20px;
     height: 20px;
@@ -66,7 +66,7 @@ td{
     background-image: url("../img/del.svg");
 }
 
-.edit-icon{
+.edit-icon {
     background-image: url("../img/edit.svg");
 }
 
@@ -78,7 +78,6 @@ td{
 .btn-wrapper {
     margin-bottom: 30px;
 }
-
 
 
 .form {
@@ -161,4 +160,21 @@ td{
     background-color: #3E5E93;
     color: #fff;
     text-align: center;
+}
+
+th {
+    cursor: pointer;
+}
+
+.th-sort-asc::after {
+    content: '\25b4';
+}
+
+.th-sort-desc::after {
+    content: '\25be';
+}
+
+.th-sort-asc::after,
+.th-sort-desc::after {
+    margin-left: 5px;
 }

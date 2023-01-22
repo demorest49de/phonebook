@@ -172,6 +172,7 @@
 
 
     return {
+      tHead: table.tHead,
       list: table.tbody,
       logo,
       btnAdd: buttonsGroup.btns[0],
@@ -246,7 +247,7 @@
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
     const phonebook = renderPhonebook(app, title);
-    const {list, logo, btnAdd, btnDel, formOverlay, form} = phonebook;
+    const {tHead, list, logo, btnAdd, btnDel, formOverlay, form} = phonebook;
 
     // Функционал
 
@@ -322,6 +323,44 @@
     // form.name.addEventListener('change', e => {
     //   console.log(': ', e.type, e.target.value);
     // });
+
+    tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((headerCell, column, nodelist) => {
+
+
+      headerCell.addEventListener('click', () => {
+
+        const sortSwitch = headerCell.classList.toggle('th-sort-asc');
+        headerCell.classList.toggle('th-sort-desc', !sortSwitch);
+
+        sortTableByColumn(column, sortSwitch);
+
+        tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((cell, number) => {
+          if (number !== column) {
+            cell.classList.remove('th-sort-asc', 'th-sort-desc');
+          }
+        });
+      });
+    });
+
+
+
+
+    const sortTableByColumn = (column, sortSwitch) => {
+      const dirModifier = sortSwitch ? 1 : -1;
+      const rows = [...list.childNodes];
+      const sortedRows = rows.sort((a, b) => {
+        const aText = a.childNodes[column].textContent.trim();
+        const bText = b.childNodes[column].textContent.trim();
+
+        return aText > bText ? (1 * dirModifier) : (-1 * dirModifier);
+      });
+
+
+      while (list.firstChild) {
+        list.removeChild(list.firstChild);
+      }
+      list.append(...sortedRows);
+    };
   };
 
   window.phoneBookInit = init;

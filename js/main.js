@@ -347,8 +347,8 @@
       const dirModifier = sortSwitch ? 1 : -1;
       const rows = [...list.childNodes];
       const sortedRows = rows.sort((a, b) => {
-        const aText = a.childNodes[column].textContent;
-        const bText = b.childNodes[column].textContent;
+        const aText = a.childNodes[column].textContent.trim();
+        const bText = b.childNodes[column].textContent.trim();
 
         return aText > bText ? (1 * dirModifier) : (-1 * dirModifier);
       });

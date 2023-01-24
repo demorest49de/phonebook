@@ -309,20 +309,21 @@
     //handle column sort
     tHead.querySelectorAll('tr th:not(:nth-child(1))')
       .forEach((headerCell, column) => {
-      headerCell.addEventListener('click', () => {
+        headerCell.addEventListener('click', () => {
 
-        const sortSwitch = headerCell.classList.toggle('th-sort-asc');
-        headerCell.classList.toggle('th-sort-desc', !sortSwitch);
+          const sortSwitch = headerCell.classList.toggle('th-sort-asc');
+          headerCell.classList.toggle('th-sort-desc', !sortSwitch);
 
-        sortTableByColumn(column + 1, sortSwitch);
+          sortTableByColumn(column + 1, sortSwitch);
 
-        tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((cell, number) => {
-          if (number !== column) {
-            cell.classList.remove('th-sort-asc', 'th-sort-desc');
-          }
+          tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((cell, number) => {
+            if (number !== column) {
+              cell.classList.remove('th-sort-asc', 'th-sort-desc');
+            }
+          });
         });
       });
-    });
+
     //method for column sort
     const sortTableByColumn = (column, sortSwitch) => {
       const dirModifier = sortSwitch ? 1 : -1;
@@ -345,11 +346,11 @@
       return getLocalStorageData();
     };
 
-    const addStorageDataToTable = () => {
+    const restoreStoragedData = () => {
       const storageData = getStorage();
 
       Object.entries(storageData).forEach(([index, value]) => {
-        if(!checkId(index)) return;
+        if (!checkId(index)) return;
         const row = createRow({id: index, name: value.name, sirname: value.sirname, phone: value.phone});
         list.append(row);
       });
@@ -381,7 +382,7 @@
     const checkId = (id) => {
       const characters = '0123456789';
       for (let i = 0; i < id.length; i++) {
-        if(!characters.includes(id[i])) return false;
+        if (!characters.includes(id[i])) return false;
       }
       return true;
     };
@@ -400,7 +401,23 @@
         };
       }, {});
 
-    addStorageDataToTable();
+    const restoreSorting = () => {
+      const sortingSettings = localStorage.getItem('sort');
+      console.log(': ',sortingSettings);
+      const parsedSettings = JSON.parse(sortingSettings);
+      sortTableByColumn(parsedSettings.column, parsedSettings.sortSwitch);
+
+      const th = tHead.querySelector(`th:nth-child(${parsedSettings.column + 1})`);
+      parsedSettings.sortSwitch ? th.classList.add('th-sort-asc') : th.classList.add('th-sort-desc');
+    };
+
+
+    const handleStorage = () => {
+      restoreStoragedData();
+      restoreSorting();
+    };
+
+    handleStorage();
   };
 
   window.phoneBookInit = init;

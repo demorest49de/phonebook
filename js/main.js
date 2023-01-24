@@ -182,7 +182,7 @@
     };
   };
 
-  const createRow = ({name: firstName, surname, phone}) => {
+  const createRow = ({id, name: firstName, sirname, phone}) => {
     const tr = document.createElement('tr');
     tr.classList.add('contact');
     const tdDel = document.createElement('td');
@@ -192,11 +192,15 @@
     buttonDel.classList.add('del-icon');
     tdDel.append(buttonDel);
 
+    const tdId = document.createElement('td');
+    tdId.textContent = id;
+    tdId.classList.add('hide-class');
+
     const tdName = document.createElement('td');
     tdName.textContent = firstName;
 
     const tdSurname = document.createElement('td');
-    tdSurname.textContent = surname;
+    tdSurname.textContent = sirname;
 
     const tdPhone = document.createElement('td');
     tdPhone.classList.add('phoneNumber');
@@ -220,7 +224,7 @@
     buttonEdit.classList.add('edit-icon');
     tdEdit.append(buttonEdit);
 
-    tr.append(tdDel, tdName, tdSurname, tdPhone, tdEdit);
+    tr.append(tdId, tdDel, tdName, tdSurname, tdPhone, tdEdit);
 
     return tr;
   };
@@ -254,10 +258,12 @@
     const allRow = renderContacts(list, window.data);
     hoverRow(allRow, logo);
 
+    // handle open form
     btnAdd.addEventListener('click', () => {
       formOverlay.classList.add('is-visible');
     });
 
+    // handle close form
     formOverlay.addEventListener('click', (e) => {
       const target = e.target;
       if (target === formOverlay || target.classList.contains('close')
@@ -267,63 +273,40 @@
       }
     });
 
+    //handle toggle del buttons for each row
     btnDel.addEventListener('click', () => {
       document.querySelectorAll('.delete').forEach((del) => {
         del.classList.toggle('is-visible');
       });
     });
 
+    //remove row
     list.addEventListener('click', e => {
       const target = e.target;
       if (target.closest('.del-icon')) {
         target.closest('.contact').remove();
       }
+      const phone = target.closest('.contact').querySelector('.phoneNumber').textContent;
+      removeStorage(phone);
     });
-    // использование задержек
-    // setTimeout(() => {
-    //   const contact =  createRow({
-    //     name: 'andre',
-    //     surname: 'shevchenko',
-    //     phone: '+79066761878',
-    //   });
-    //   list.append(contact);
-    // }, 2000);
 
-    //стандартное поведение формы после отправки данных на форму происходит перезагрузка страницы
+    //handle formData and save to storage
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-
-      //при отправки данных на форму: извл-ние данных из формы, идет запрос на сервер, изменение данных в приложении, внешний вид
-      // отправка данных на сервер по событию клик не верно!
-
-      //получение данных из формы
-      // непправильный способ - не правильный это поулчение данных с формы через queryselector это не правильно - ресурсозатратно и лишний код
-      // правильный 1 способ - через поля по именам
-      // console.log(': ',form.name.value);
-      // console.log(': ',form.sirname.value);
-      // console.log(': ',form.phone.value);
-      // правильный 2 способ - formdata
       const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      console.log(': ',data);
+      const {name, sirname, phone} = data;
+      const id = createId();
+      const row = createRow({id, name, sirname, phone});
+      list.append(row);
+      form.reset();
+      formOverlay.classList.remove('is-visible');
 
-      // console.log(': ',formData.get('phone'));
-      //интерировать можно с пом forof foreach или spread оператора
-      // console.log(': ', [...formData.entries()]);
-      //
-      // console.log(': ', Object.fromEntries(formData.entries()));
+      setStorage({id, name, sirname, phone});
     });
 
-    // form.name.addEventListener('focus', e => {
-    //   console.warn(': ', e.type, e.target.value);
-    // });
-    //
-    // form.name.addEventListener('blur', e => {
-    //   console.error(': ', e.type, e.target.value);
-    // });
-    //
-    // form.name.addEventListener('change', e => {
-    //   console.log(': ', e.type, e.target.value);
-    // });
-
+    //handle column sort
     tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((headerCell, column, nodelist) => {
 
 
@@ -341,8 +324,7 @@
         });
       });
     });
-
-
+    //method for column sort
     const sortTableByColumn = (column, sortSwitch) => {
       const dirModifier = sortSwitch ? 1 : -1;
       const rows = [...list.childNodes];
@@ -359,6 +341,57 @@
       }
       list.append(...sortedRows);
     };
+
+    const getStorage = () => {
+      return getLocalStorageData();
+    };
+
+    const addStorageDataToTable = () => {
+      const storageData = getStorage();
+
+      Object.entries(storageData).forEach(([index, value]) => {
+        const row = createRow({name: value.name, sirname: value.sirname, phone: value.phone});
+        list.append(row);
+      });
+    };
+
+    const setStorage = (contact) => {
+      localStorage.setItem(contact.id, JSON.stringify(contact));
+    };
+
+    const removeStorage = (phone) => {
+      const data = getStorage();
+      Object.entries(data).forEach(([index, value]) => {
+        if (value.phone === phone) {
+          // localStorage.removeItem()
+        }
+      });
+    };
+
+    const createId = () => {
+      let ID = ``;
+      const characters = '0123456789';
+      for (let i = 0; i < 9; i++) {
+        ID += characters.charAt(Math.floor(Math.random() * 10));
+      }
+      return ID;
+    };
+
+    const getLocalStorageData = () => Object.entries(localStorage)
+      .reduce((acc, [key, value]) => {
+        let newValue;
+        try {
+          newValue = JSON.parse(value);
+        } catch {
+          newValue = value;
+        }
+        return {
+          ...acc,
+          [key]: newValue,
+        };
+      }, {});
+
+    addStorageDataToTable();
   };
 
   window.phoneBookInit = init;

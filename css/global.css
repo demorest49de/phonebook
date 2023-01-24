@@ -52,3 +52,7 @@ ul, ol {
   width: 1px !important;
   overflow: hidden;
 }
+
+.hide-class{
+  display: none;
+}

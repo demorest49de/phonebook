@@ -350,7 +350,7 @@
       const storageData = getStorage();
 
       Object.entries(storageData).forEach(([index, value]) => {
-        const row = createRow({name: value.name, sirname: value.sirname, phone: value.phone});
+        const row = createRow({id: index, name: value.name, sirname: value.sirname, phone: value.phone});
         list.append(row);
       });
     };

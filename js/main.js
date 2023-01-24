@@ -363,7 +363,7 @@
       const data = getStorage();
       Object.entries(data).forEach(([index, value]) => {
         if (value.phone === phone) {
-          // localStorage.removeItem()
+          localStorage.removeItem(index);
         }
       });
     };

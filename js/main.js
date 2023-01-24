@@ -295,7 +295,7 @@
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData);
-      console.log(': ',data);
+      console.log(': ', data);
       const {name, sirname, phone} = data;
       const id = createId();
       const row = createRow({id, name, sirname, phone});
@@ -307,9 +307,8 @@
     });
 
     //handle column sort
-    tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((headerCell, column, nodelist) => {
-
-
+    tHead.querySelectorAll('tr th:not(:nth-child(1))')
+      .forEach((headerCell, column) => {
       headerCell.addEventListener('click', () => {
 
         const sortSwitch = headerCell.classList.toggle('th-sort-asc');
@@ -331,7 +330,7 @@
       const sortedRows = rows.sort((a, b) => {
         const aText = a.childNodes[column].textContent.trim();
         const bText = b.childNodes[column].textContent.trim();
-
+        localStorage.setItem('sort', JSON.stringify({column, sortSwitch}));
         return aText > bText ? (1 * dirModifier) : (-1 * dirModifier);
       });
 
@@ -350,6 +349,7 @@
       const storageData = getStorage();
 
       Object.entries(storageData).forEach(([index, value]) => {
+        if(!checkId(index)) return;
         const row = createRow({id: index, name: value.name, sirname: value.sirname, phone: value.phone});
         list.append(row);
       });
@@ -375,6 +375,15 @@
         ID += characters.charAt(Math.floor(Math.random() * 10));
       }
       return ID;
+    };
+
+    //handle if id is id of contact
+    const checkId = (id) => {
+      const characters = '0123456789';
+      for (let i = 0; i < id.length; i++) {
+        if(!characters.includes(id[i])) return false;
+      }
+      return true;
     };
 
     const getLocalStorageData = () => Object.entries(localStorage)

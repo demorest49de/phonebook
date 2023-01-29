@@ -182,19 +182,20 @@
     };
   };
 
-  const createRow = ({id, name: firstName, sirname, phone}) => {
+  const createRow = ({id, name: firstName, surname: sirname, phone}) => {
     const tr = document.createElement('tr');
     tr.classList.add('contact');
     const tdDel = document.createElement('td');
     tdDel.classList.add('delete');
+    tdDel.setAttribute('data-id', id);
     const buttonDel = document.createElement('button');
     buttonDel.classList.add('icon');
     buttonDel.classList.add('del-icon');
     tdDel.append(buttonDel);
 
-    const tdId = document.createElement('td');
-    tdId.textContent = id;
-    tdId.classList.add('hide-class');
+    // const tdId = document.createElement('td');
+    // tdId.textContent = id;
+    // tdId.classList.add('hide-class');
 
     const tdName = document.createElement('td');
     tdName.textContent = firstName;
@@ -224,7 +225,7 @@
     buttonEdit.classList.add('edit-icon');
     tdEdit.append(buttonEdit);
 
-    tr.append(tdId, tdDel, tdName, tdSurname, tdPhone, tdEdit);
+    tr.append(tdDel, tdName, tdSurname, tdPhone, tdEdit);
 
     return tr;
   };
@@ -254,7 +255,6 @@
     const {tHead, list, logo, btnAdd, btnDel, formOverlay, form} = phonebook;
 
     // Функционал
-
     const allRow = renderContacts(list, window.data);
     hoverRow(allRow, logo);
 
@@ -302,7 +302,7 @@
       list.append(row);
       form.reset();
       formOverlay.classList.remove('is-visible');
-
+      handleSorting();
       setStorage({id, name, sirname, phone});
     });
 
@@ -314,9 +314,12 @@
           const sortSwitch = headerCell.classList.toggle('th-sort-asc');
           headerCell.classList.toggle('th-sort-desc', !sortSwitch);
 
-          sortTableByColumn(column + 1, sortSwitch);
-
+          column += 2;
+          sortTableByColumn(column, sortSwitch);
+          saveSortingInStorage(JSON.stringify({column, sortSwitch}));
           tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((cell, number) => {
+            console.log(': ', cell.textContent);
+            number += 2;
             if (number !== column) {
               cell.classList.remove('th-sort-asc', 'th-sort-desc');
             }
@@ -324,17 +327,22 @@
         });
       });
 
+    const saveSortingInStorage = (settings) => {
+      localStorage.setItem('sort', settings);
+    };
+
     //method for column sort
     const sortTableByColumn = (column, sortSwitch) => {
       const dirModifier = sortSwitch ? 1 : -1;
       const rows = [...list.childNodes];
       const sortedRows = rows.sort((a, b) => {
-        const aText = a.childNodes[column].textContent.trim();
-        const bText = b.childNodes[column].textContent.trim();
-        localStorage.setItem('sort', JSON.stringify({column, sortSwitch}));
+        const aText = a.childNodes[column].textContent.trim().toLowerCase();
+        console.log(': ', aText, a.childNodes.forEach(item => {
+          console.log(': ', item.textContent);
+        }));
+        const bText = b.childNodes[column].textContent.trim().toLowerCase();
         return aText > bText ? (1 * dirModifier) : (-1 * dirModifier);
       });
-
 
       while (list.firstChild) {
         list.removeChild(list.firstChild);
@@ -346,7 +354,7 @@
       return getLocalStorageData();
     };
 
-    const restoreStoragedData = () => {
+    const handleStoragedData = () => {
       const storageData = getStorage();
 
       Object.entries(storageData).forEach(([index, value]) => {
@@ -401,20 +409,27 @@
         };
       }, {});
 
-    const restoreSorting = () => {
-      const sortingSettings = localStorage.getItem('sort');
-      console.log(': ',sortingSettings);
-      const parsedSettings = JSON.parse(sortingSettings);
-      sortTableByColumn(parsedSettings.column, parsedSettings.sortSwitch);
+    const handleSorting = () => {
+      let sortingSettings = localStorage.getItem('sort');
 
-      const th = tHead.querySelector(`th:nth-child(${parsedSettings.column + 1})`);
+      if (!sortingSettings) {
+        sortingSettings = JSON.stringify({column: 2, sortSwitch: true});
+        console.log(': ', sortingSettings);
+        saveSortingInStorage(sortingSettings);
+      }
+
+      const parsedSettings = JSON.parse(sortingSettings);
+
+      sortTableByColumn(parsedSettings.column - 1, parsedSettings.sortSwitch);
+
+      const th = tHead.querySelector(`th:nth-child(${parsedSettings.column})`);
       parsedSettings.sortSwitch ? th.classList.add('th-sort-asc') : th.classList.add('th-sort-desc');
     };
 
 
     const handleStorage = () => {
-      restoreStoragedData();
-      restoreSorting();
+      handleStoragedData();
+      handleSorting();
     };
 
     handleStorage();

@@ -107,7 +107,7 @@
         <div class="form-group">
           <label class="form-label" for="phone">Телефон:</label>
           <input class="form-input" name="phone" 
-          id="phone" type="number" required>
+          id="phone" type="text" required>
         </div>
       `);
 
@@ -295,7 +295,7 @@
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData);
-      console.log(': ', data);
+
       const {name, sirname, phone} = data;
       const id = createId();
       const row = createRow({id, name, surname: sirname, phone});
@@ -310,16 +310,16 @@
     tHead.querySelectorAll('tr th:not(:nth-child(1))')
       .forEach((headerCell, column) => {
         headerCell.addEventListener('click', () => {
-          console.log(': ', headerCell.textContent);
+
           const sortSwitch = headerCell.classList.toggle('th-sort-asc');
           headerCell.classList.toggle('th-sort-desc', !sortSwitch);
+
           let temp = column + 1;
           sortTableByColumn(temp, sortSwitch);
           saveSortingInStorage(JSON.stringify({column: temp, sortSwitch: sortSwitch}));
           tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((cell, number) => {
-            console.log(': ', cell.textContent);
+
             let temp = number + 1;
-            number += 1;
             if (column + 1 !== temp) {
               cell.classList.remove('th-sort-asc', 'th-sort-desc');
             }
@@ -337,10 +337,8 @@
       const rows = [...list.childNodes];
       const sortedRows = rows.sort((a, b) => {
         const aText = a.childNodes[column].textContent.trim().toLowerCase();
-        console.log(': ', aText, a.childNodes.forEach(item => {
-          console.log(': ', item.textContent);
-        }));
         const bText = b.childNodes[column].textContent.trim().toLowerCase();
+
         return aText > bText ? (1 * dirModifier) : (-1 * dirModifier);
       });
 
@@ -422,7 +420,6 @@
       sortTableByColumn(parsedSettings.column, parsedSettings.sortSwitch);
 
       const th = tHead.querySelector(`th:nth-child(${parsedSettings.column + 1})`);
-      console.log(': ', th.textContent);
       parsedSettings.sortSwitch ? th.classList.add('th-sort-asc') : th.classList.add('th-sort-desc');
     };
 

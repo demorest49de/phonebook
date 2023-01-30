@@ -298,7 +298,7 @@
       console.log(': ', data);
       const {name, sirname, phone} = data;
       const id = createId();
-      const row = createRow({id, name, sirname, phone});
+      const row = createRow({id, name, surname: sirname, phone});
       list.append(row);
       form.reset();
       formOverlay.classList.remove('is-visible');
@@ -310,17 +310,17 @@
     tHead.querySelectorAll('tr th:not(:nth-child(1))')
       .forEach((headerCell, column) => {
         headerCell.addEventListener('click', () => {
-
+          console.log(': ', headerCell.textContent);
           const sortSwitch = headerCell.classList.toggle('th-sort-asc');
           headerCell.classList.toggle('th-sort-desc', !sortSwitch);
-
-          column += 2;
-          sortTableByColumn(column, sortSwitch);
-          saveSortingInStorage(JSON.stringify({column, sortSwitch}));
+          let temp = column + 1;
+          sortTableByColumn(temp, sortSwitch);
+          saveSortingInStorage(JSON.stringify({column: temp, sortSwitch: sortSwitch}));
           tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((cell, number) => {
             console.log(': ', cell.textContent);
-            number += 2;
-            if (number !== column) {
+            let temp = number + 1;
+            number += 1;
+            if (column + 1 !== temp) {
               cell.classList.remove('th-sort-asc', 'th-sort-desc');
             }
           });
@@ -359,7 +359,7 @@
 
       Object.entries(storageData).forEach(([index, value]) => {
         if (!checkId(index)) return;
-        const row = createRow({id: index, name: value.name, sirname: value.sirname, phone: value.phone});
+        const row = createRow({id: index, name: value.name, surname: value.sirname, phone: value.phone});
         list.append(row);
       });
     };
@@ -413,16 +413,16 @@
       let sortingSettings = localStorage.getItem('sort');
 
       if (!sortingSettings) {
-        sortingSettings = JSON.stringify({column: 2, sortSwitch: true});
-        console.log(': ', sortingSettings);
+        sortingSettings = JSON.stringify({column: 1, sortSwitch: true});
         saveSortingInStorage(sortingSettings);
       }
 
       const parsedSettings = JSON.parse(sortingSettings);
 
-      sortTableByColumn(parsedSettings.column - 1, parsedSettings.sortSwitch);
+      sortTableByColumn(parsedSettings.column, parsedSettings.sortSwitch);
 
-      const th = tHead.querySelector(`th:nth-child(${parsedSettings.column})`);
+      const th = tHead.querySelector(`th:nth-child(${parsedSettings.column + 1})`);
+      console.log(': ', th.textContent);
       parsedSettings.sortSwitch ? th.classList.add('th-sort-asc') : th.classList.add('th-sort-desc');
     };
 

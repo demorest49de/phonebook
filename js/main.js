@@ -236,10 +236,9 @@
     return allRow;
   };
 
-  const hoverRow = (allRow, logo) => {
+  const handleHoverRow = (allRows, logo) => {
     const text = logo.textContent;
-
-    allRow.forEach(contact => {
+    allRows.forEach(contact => {
       contact.addEventListener('mouseenter', () => {
         logo.textContent = contact.phoneLink.textContent;
       });
@@ -255,8 +254,8 @@
     const {tHead, list, logo, btnAdd, btnDel, formOverlay, form} = phonebook;
 
     // Функционал
-    const allRow = renderContacts(list, window.data);
-    hoverRow(allRow, logo);
+    //const allRow = renderContacts(list, window.data);
+
 
     // handle open form
     btnAdd.addEventListener('click', () => {
@@ -288,7 +287,20 @@
       }
       const phone = target.closest('.contact').querySelector('.phoneNumber').textContent;
       removeStorage(phone);
+
     });
+
+    const handleHowerRows = () => {
+      list.addEventListener('mouseenter', e => {
+        const target = e.target;
+        //hower rows
+        if (target.querySelector('.contact')) {
+          const allRows = list.querySelectorAll('.contact');
+          handleHoverRow(allRows, logo);
+        }
+      });
+    };
+    handleHowerRows();
 
     //handle formData and save to storage
     form.addEventListener('submit', (e) => {

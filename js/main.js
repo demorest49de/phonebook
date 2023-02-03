@@ -182,7 +182,7 @@
     };
   };
 
-  const createRow = ({id, name: firstName, surname: sirname, phone}) => {
+  const createRow = ({id, name: firstName, sirname, phone}) => {
     const tr = document.createElement('tr');
     tr.classList.add('contact');
     const tdDel = document.createElement('td');
@@ -192,10 +192,6 @@
     buttonDel.classList.add('icon');
     buttonDel.classList.add('del-icon');
     tdDel.append(buttonDel);
-
-    // const tdId = document.createElement('td');
-    // tdId.textContent = id;
-    // tdId.classList.add('hide-class');
 
     const tdName = document.createElement('td');
     tdName.textContent = firstName;
@@ -230,12 +226,6 @@
     return tr;
   };
 
-  const renderContacts = (elem, data) => {
-    const allRow = data.map(createRow);
-    elem.append(...allRow);
-    return allRow;
-  };
-
   const handleHoverRow = (allRows, logo) => {
     const text = logo.textContent;
     allRows.forEach(contact => {
@@ -249,13 +239,12 @@
   };
 
   const init = (selectorApp, title) => {
+    const nameApp = 'phoneBook';
     const app = document.querySelector(selectorApp);
     const phonebook = renderPhonebook(app, title);
     const {tHead, list, logo, btnAdd, btnDel, formOverlay, form} = phonebook;
 
     // Функционал
-    //const allRow = renderContacts(list, window.data);
-
 
     // handle open form
     btnAdd.addEventListener('click', () => {
@@ -285,15 +274,16 @@
       if (target.closest('.del-icon')) {
         target.closest('.contact').remove();
       }
+      //remove from storage
       const phone = target.closest('.contact').querySelector('.phoneNumber').textContent;
-      removeStorage(phone);
+      removeFromStorage(phone);
 
     });
 
+    //hower rows
     const handleHowerRows = () => {
       list.addEventListener('mouseenter', e => {
         const target = e.target;
-        //hower rows
         if (target.querySelector('.contact')) {
           const allRows = list.querySelectorAll('.contact');
           handleHoverRow(allRows, logo);
@@ -302,7 +292,7 @@
     };
     handleHowerRows();
 
-    //handle formData and save to storage
+    //handle formData and save new item to storage
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
@@ -310,15 +300,18 @@
 
       const {name, sirname, phone} = data;
       const id = createId();
-      const row = createRow({id, name, surname: sirname, phone});
+      const row = createRow({id, name, sirname, phone});
       list.append(row);
       form.reset();
       formOverlay.classList.remove('is-visible');
-      handleSorting();
-      setStorage({id, name, sirname, phone});
+
+      const storage = getStorage();
+      handleSorting(storage.sort);
+      storage.data.push({id, name, sirname, phone});
+      saveStorage(storage);
     });
 
-    //handle column sort
+    //handle column sort by pressing arrow up/down button by user
     tHead.querySelectorAll('tr th:not(:nth-child(1))')
       .forEach((headerCell, column) => {
         headerCell.addEventListener('click', () => {
@@ -327,8 +320,12 @@
           headerCell.classList.toggle('th-sort-desc', !sortSwitch);
 
           let temp = column + 1;
-          sortTableByColumn(temp, sortSwitch);
-          saveSortingInStorage(JSON.stringify({column: temp, sortSwitch: sortSwitch}));
+
+          const storage = getStorage();
+          storage.sort = {column: temp, direction: sortSwitch};
+
+          sortBy({temp, sortSwitch});
+
           tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((cell, number) => {
 
             let temp = number + 1;
@@ -339,13 +336,10 @@
         });
       });
 
-    const saveSortingInStorage = (settings) => {
-      localStorage.setItem('sort', settings);
-    };
 
     //method for column sort
-    const sortTableByColumn = (column, sortSwitch) => {
-      const dirModifier = sortSwitch ? 1 : -1;
+    const sortBy = ({column, direction}) => {
+      const dirModifier = direction ? 1 : -1;
       const rows = [...list.childNodes];
       const sortedRows = rows.sort((a, b) => {
         const aText = a.childNodes[column].textContent.trim().toLowerCase();
@@ -361,26 +355,40 @@
     };
 
     const getStorage = () => {
-      return getLocalStorageData();
+      const empty = createEmptyObject();
+      const storage = localStorage.getItem(nameApp) ?
+        localStorage.getItem(nameApp) : localStorage.setItem(nameApp, empty);
+      return JSON.parse(storage);
     };
 
-    const handleStoragedData = () => {
-      const storageData = getStorage();
+    const saveStorage = (storage) => {
+      localStorage.setItem(nameApp, JSON.stringify(storage));
+    };
 
-      Object.entries(storageData).forEach(([index, value]) => {
-        if (!checkId(index)) return;
-        const row = createRow({id: index, name: value.name, surname: value.sirname, phone: value.phone});
+    const createEmptyObject = () => {
+      return JSON.stringify({
+        data: [],
+        sort: {
+          column: 1,
+          direction: true,
+        },
+      });
+    };
+
+    const renderContacts = (storage) => {
+      if (storage.data.length === 0) return;
+      Object.entries(storage.data).forEach(([index, value]) => {
+        const {id, name, sirname, phone} = value;
+        const row = createRow({id, name, sirname, phone});
         list.append(row);
       });
     };
 
-    const setStorage = (contact) => {
-      localStorage.setItem(contact.id, JSON.stringify(contact));
-    };
 
-    const removeStorage = (phone) => {
+    const removeFromStorage = (phone) => {
       const data = getStorage();
-      Object.entries(data).forEach(([index, value]) => {
+
+      Object.entries(data.data).forEach(([index, value]) => {
         if (value.phone === phone) {
           localStorage.removeItem(index);
         }
@@ -396,49 +404,21 @@
       return ID;
     };
 
-    //handle if id is id of contact
-    const checkId = (id) => {
-      const characters = '0123456789';
-      for (let i = 0; i < id.length; i++) {
-        if (!characters.includes(id[i])) return false;
-      }
-      return true;
-    };
+    const handleSorting = (sortSettings) => {
 
-    const getLocalStorageData = () => Object.entries(localStorage)
-      .reduce((acc, [key, value]) => {
-        let newValue;
-        try {
-          newValue = JSON.parse(value);
-        } catch {
-          newValue = value;
-        }
-        return {
-          ...acc,
-          [key]: newValue,
-        };
-      }, {});
+      sortBy(sortSettings);
 
-    const handleSorting = () => {
-      let sortingSettings = localStorage.getItem('sort');
-
-      if (!sortingSettings) {
-        sortingSettings = JSON.stringify({column: 1, sortSwitch: true});
-        saveSortingInStorage(sortingSettings);
-      }
-
-      const parsedSettings = JSON.parse(sortingSettings);
-
-      sortTableByColumn(parsedSettings.column, parsedSettings.sortSwitch);
-
-      const th = tHead.querySelector(`th:nth-child(${parsedSettings.column + 1})`);
-      parsedSettings.sortSwitch ? th.classList.add('th-sort-asc') : th.classList.add('th-sort-desc');
+      const th = tHead.querySelector(`th:nth-child(${sortSettings.column + 1})`);
+      sortSettings.direction ? th.classList.add('th-sort-asc') : th.classList.add('th-sort-desc');
     };
 
 
     const handleStorage = () => {
-      handleStoragedData();
-      handleSorting();
+      // do not save anything only read and display
+      const storage = getStorage();
+
+      renderContacts(storage);
+      handleSorting(storage.sort);
     };
 
     handleStorage();

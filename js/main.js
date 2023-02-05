@@ -275,8 +275,12 @@
         target.closest('.contact').remove();
       }
       //remove from storage
-      const phone = target.closest('.contact').querySelector('.phoneNumber').textContent;
-      removeFromStorage(phone);
+      const contact = target.closest('.contact').querySelector('.delete[data-id]');
+      console.log(': ',contact);
+      if(contact.hasAttribute('data-id')){
+        removeFromStorage(contact.getAttribute('data-id'));
+      }
+
 
     });
 
@@ -385,14 +389,13 @@
     };
 
 
-    const removeFromStorage = (phone) => {
-      const data = getStorage();
+    const removeFromStorage = (id) => {
+      const storage = getStorage();
 
-      Object.entries(data.data).forEach(([index, value]) => {
-        if (value.phone === phone) {
-          localStorage.removeItem(index);
-        }
-      });
+      const data = storage.data;
+      const result = data.filter(x => x.id !== id);
+      storage.data = result;
+      saveStorage(storage);
     };
 
     const createId = () => {

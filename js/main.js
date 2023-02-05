@@ -271,15 +271,18 @@
     //remove row
     list.addEventListener('click', e => {
       const target = e.target;
-      if (target.closest('.del-icon')) {
-        target.closest('.contact').remove();
-      }
-      //remove from storage
-      const contact = target.closest('.contact').querySelector('.delete[data-id]');
+      console.log(': ',target === target.closest('.del-icon'));
 
-      if(contact.hasAttribute('data-id')){
-        removeFromStorage(contact.getAttribute('data-id'));
+      if (target === target.closest('.del-icon')) {
+        target.closest('.contact').remove();
+        //remove from storage
+        const contact = target.closest('.contact').querySelector('.delete[data-id]');
+
+        if (contact.hasAttribute('data-id')) {
+          removeFromStorage(contact.getAttribute('data-id'));
+        }
       }
+
     });
 
     //hower rows
@@ -337,6 +340,14 @@
           });
         });
       });
+
+    //edit row
+    // list.querySelectorAll('.icon .edit-icon').forEach(item => {
+    //   item.addEventListener('click', e => {
+    //     const target = e.target;
+    //     console.log(': ', target);
+    //   });
+    // });
 
 
     //method for column sort
@@ -411,7 +422,6 @@
       const th = tHead.querySelector(`th:nth-child(${sortSettings.column + 1})`);
       sortSettings.direction ? th.classList.add('th-sort-asc') : th.classList.add('th-sort-desc');
     };
-
 
     const handleStorage = () => {
       const storage = getStorage();

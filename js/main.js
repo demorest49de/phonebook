@@ -276,12 +276,10 @@
       }
       //remove from storage
       const contact = target.closest('.contact').querySelector('.delete[data-id]');
-      console.log(': ',contact);
+
       if(contact.hasAttribute('data-id')){
         removeFromStorage(contact.getAttribute('data-id'));
       }
-
-
     });
 
     //hower rows
@@ -328,7 +326,7 @@
           const storage = getStorage();
           storage.sort = {column: temp, direction: sortSwitch};
 
-          sortBy({temp, sortSwitch});
+          sortBy({column: temp, direction: sortSwitch});
 
           tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((cell, number) => {
 
@@ -388,7 +386,6 @@
       });
     };
 
-
     const removeFromStorage = (id) => {
       const storage = getStorage();
 
@@ -417,7 +414,6 @@
 
 
     const handleStorage = () => {
-      // do not save anything only read and display
       const storage = getStorage();
 
       renderContacts(storage);

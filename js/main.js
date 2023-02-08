@@ -97,7 +97,7 @@
         <h2 class="form-title">Добавить контакт</h2>
         <div class="form-group">
           <label class="form-label" for="name">Имя:</label>
-          <input class="form-input" name="name" id="name" type="text" required>
+          <input class="form-input" name="name" id="name" type="text" data-id="" required>
         </div>
         <div class="form-group">
           <label class="form-label" for="sirname">Фамилия:</label>
@@ -249,6 +249,7 @@
     // handle open form
     btnAdd.addEventListener('click', () => {
       const addBtn = form.querySelector('button.btn-primary');
+      form.querySelector('.form-title').textContent = 'Добавить контакт';
       console.log(': ', addBtn);
       addBtn.textContent = 'Добавить';
       formOverlay.classList.add('is-visible');
@@ -308,7 +309,7 @@
 
       const storage = getStorage();
 
-      const saveBtn = form.querySelector('button.js-save');
+      const saveBtn = list.querySelector('button.js-save');
       if(saveBtn){
         const id = saveBtn;
         console.log(': ',id);
@@ -363,7 +364,6 @@
         const saveBtn = form.querySelector('button.btn-primary');
         console.log(': ', saveBtn);
         saveBtn.textContent = 'Сохранить';
-        saveBtn.classList.add('js-save');
         const id = target.closest('.contact').querySelector('.delete[data-id]').getAttribute('data-id');
 
         const storage = getStorage();
@@ -371,6 +371,7 @@
         for (let i = 0; i < data.length; i++) {
           if (data[i].id === id) {
             form.querySelector('#name').value = data[i].name;
+            form.querySelector('#name').setAttribute('data-id', data[i].id);
             form.querySelector('#sirname').value = data[i].sirname;
             form.querySelector('#phone').value = data[i].phone;
             break;

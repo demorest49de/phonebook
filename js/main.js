@@ -248,6 +248,9 @@
 
     // handle open form
     btnAdd.addEventListener('click', () => {
+      const addBtn = form.querySelector('button.btn-primary');
+      console.log(': ', addBtn);
+      addBtn.textContent = 'Добавить';
       formOverlay.classList.add('is-visible');
     });
 
@@ -271,7 +274,6 @@
     //remove row
     list.addEventListener('click', e => {
       const target = e.target;
-      console.log(': ',target === target.closest('.del-icon'));
 
       if (target === target.closest('.del-icon')) {
         target.closest('.contact').remove();
@@ -282,7 +284,6 @@
           removeFromStorage(contact.getAttribute('data-id'));
         }
       }
-
     });
 
     //hower rows
@@ -297,23 +298,34 @@
     };
     handleHowerRows();
 
-    //handle formData and save new item to storage
+    //handle formData and save/change item to storage
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData);
 
+
+      const storage = getStorage();
+
+      const saveBtn = form.querySelector('button.js-save');
+      if(saveBtn){
+        const id = saveBtn;
+        console.log(': ',id);
+        return;
+      }
+
       const {name, sirname, phone} = data;
+
       const id = createId();
       const row = createRow({id, name, sirname, phone});
       list.append(row);
-      form.reset();
-      formOverlay.classList.remove('is-visible');
-
-      const storage = getStorage();
-      handleSorting(storage.sort);
       storage.data.push({id, name, sirname, phone});
       saveStorage(storage);
+      handleSorting(storage.sort);
+
+      form.reset();
+      formOverlay.classList.remove('is-visible');
     });
 
     //handle column sort by pressing arrow up/down button by user
@@ -342,12 +354,30 @@
       });
 
     //edit row
-    // list.querySelectorAll('.icon .edit-icon').forEach(item => {
-    //   item.addEventListener('click', e => {
-    //     const target = e.target;
-    //     console.log(': ', target);
-    //   });
-    // });
+    list.addEventListener('click', e => {
+      const target = e.target;
+      if (target.closest('.edit-icon')) {
+        formOverlay.classList.add('is-visible');
+        const title = form.querySelector('.form-title');
+        title.textContent = 'Изменить контакт';
+        const saveBtn = form.querySelector('button.btn-primary');
+        console.log(': ', saveBtn);
+        saveBtn.textContent = 'Сохранить';
+        saveBtn.classList.add('js-save');
+        const id = target.closest('.contact').querySelector('.delete[data-id]').getAttribute('data-id');
+
+        const storage = getStorage();
+        const data = storage.data;
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === id) {
+            form.querySelector('#name').value = data[i].name;
+            form.querySelector('#sirname').value = data[i].sirname;
+            form.querySelector('#phone').value = data[i].phone;
+            break;
+          }
+        }
+      }
+    });
 
 
     //method for column sort

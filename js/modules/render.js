@@ -1,3 +1,9 @@
+import createElement from "./createElement";
+
+const {
+  createTable, createMain, createButtonsGroup, createForm, createHeader, createLogo, createFooter,
+} = createElement;
+
 const renderPhonebook = (app, title) => {
   const header = createHeader();
   const logo = createLogo(title);
@@ -32,3 +38,7 @@ const renderPhonebook = (app, title) => {
     form: form.form,
   };
 };
+
+export default {
+  renderPhonebook,
+}

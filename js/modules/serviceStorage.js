@@ -1,11 +1,11 @@
-const getStorage = () => {
+const getStorage = (nameApp) => {
   const empty = createEmptyObject();
   let storage = localStorage.getItem(nameApp) ?
     localStorage.getItem(nameApp) : localStorage.setItem(nameApp, empty);
   if (!storage) storage = localStorage.getItem(nameApp);
   return JSON.parse(storage);
 };
-const saveStorage = (storage) => {
+const saveStorage = (storage, nameApp) => {
   localStorage.setItem(nameApp, JSON.stringify(storage));
 };
 const createEmptyObject = () => {
@@ -29,6 +29,5 @@ const removeContactFromStorage = (id) => {
 export default {
   getStorage,
   saveStorage,
-  createEmptyObject,
   removeContactFromStorage,
 }

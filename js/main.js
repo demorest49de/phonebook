@@ -1,17 +1,19 @@
 import serviceStorage from './modules/serviceStorage.js';
 import createElement from './modules/createElement';
 import control from './modules/control.js';
+import render from "./modules/render";
+
+const {
+  renderPhonebook
+} = render;
 
 const {
   saveStorage,
   getStorage,
-  createEmptyObject,
-  removeContactFromStorage
 } = serviceStorage;
 
 const {
   createRow,
-  createFooter, createContainer, createLogo, createHeader, createSingleButton, createForm, createButtonsGroup, createMain, createTable,
 } = createElement;
 
 const {
@@ -19,7 +21,7 @@ const {
   closeForm,
   toggleDelButton,
   removeRow,
-
+  hoverRows
 } = control;
 
 {
@@ -39,9 +41,7 @@ const {
 
     removeRow(list);
 
-
-
-    HowerRows();
+    hoverRows(list, logo);
 
     //handle formData and save/edit item to storage
 

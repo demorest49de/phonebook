@@ -1,3 +1,9 @@
+import serviceStorage from "./serviceStorage";
+
+const {
+  removeContactFromStorage
+} = serviceStorage;
+
 const openForm = (btnAdd, form, formOverlay) => {
   btnAdd.addEventListener('click', () => {
     const addBtn = form.querySelector('button.btn-primary');
@@ -30,7 +36,7 @@ const removeRow = (list) => {
 
     if (target === target.closest('.del-icon')) {
       target.closest('.contact').remove();
-      //remove from storage
+
       const contact = target.closest('.contact').querySelector('.delete[data-id]');
 
       if (contact.hasAttribute('data-id')) {

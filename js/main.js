@@ -95,6 +95,7 @@
       `
         <button class="close" type="button"></button>
         <h2 class="form-title">Добавить контакт</h2>
+        <div class="hide-class form-id"></div>
         <div class="form-group">
           <label class="form-label" for="name">Имя:</label>
           <input class="form-input" name="name" id="name" type="text" data-id="" required>
@@ -308,20 +309,30 @@
 
 
       const storage = getStorage();
+      let id;
+      const {name, sirname, phone} = data;
+      if (form.querySelector('.form-id').hasAttribute('data-id')) {
+        id = form.querySelector('.form-id').getAttribute('data-id');
+        form.querySelector('.form-id').removeAttribute('data-id');
 
-      const saveBtn = list.querySelector('button.js-save');
-      if(saveBtn){
-        const id = saveBtn;
-        console.log(': ',id);
-        return;
+        const result = storage.data.map(item => {
+          if(item.id === id){
+            item.name = name;
+            item.sirname = sirname;
+            item.phone = phone;
+          }
+          return item;
+        });
+        storage.data = result;
+        renderContacts(storage);
+      } else {
+        id = createId();
+        const row = createRow({id, name, sirname, phone});
+        list.append(row);
+        storage.data.push({id, name, sirname, phone});
       }
 
-      const {name, sirname, phone} = data;
 
-      const id = createId();
-      const row = createRow({id, name, sirname, phone});
-      list.append(row);
-      storage.data.push({id, name, sirname, phone});
       saveStorage(storage);
       handleSorting(storage.sort);
 
@@ -371,10 +382,10 @@
         for (let i = 0; i < data.length; i++) {
           if (data[i].id === id) {
             form.querySelector('#name').value = data[i].name;
-            form.querySelector('#name').setAttribute('data-id', data[i].id);
+            form.querySelector('.form-id').setAttribute('data-id', data[i].id);
             form.querySelector('#sirname').value = data[i].sirname;
             form.querySelector('#phone').value = data[i].phone;
-            break;
+            return;
           }
         }
       }
@@ -421,6 +432,11 @@
 
     const renderContacts = (storage) => {
       if (storage.data.length === 0) return;
+
+      while(list.firstChild){
+        list.removeChild(list.firstChild)
+      }
+
       Object.entries(storage.data).forEach(([index, value]) => {
         const {id, name, sirname, phone} = value;
         const row = createRow({id, name, sirname, phone});

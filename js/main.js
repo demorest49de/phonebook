@@ -316,7 +316,7 @@
         form.querySelector('.form-id').removeAttribute('data-id');
 
         const result = storage.data.map(item => {
-          if(item.id === id){
+          if (item.id === id) {
             item.name = name;
             item.sirname = sirname;
             item.phone = phone;
@@ -342,11 +342,11 @@
 
     //handle column sort by pressing arrow up/down button by user
     tHead.querySelectorAll('tr th:not(:nth-child(1))')
-      .forEach((headerCell, column) => {
-        headerCell.addEventListener('click', () => {
-
-          const sortSwitch = headerCell.classList.toggle('th-sort-asc');
-          headerCell.classList.toggle('th-sort-desc', !sortSwitch);
+      .forEach((thCell, column) => {
+        thCell.addEventListener('click', () => {
+          console.log(thCell.textContent);
+          const sortSwitch = thCell.classList.toggle('th-sort-asc');
+          thCell.classList.toggle('th-sort-desc', !sortSwitch);
 
           let temp = column + 1;
 
@@ -354,7 +354,7 @@
           storage.sort = {column: temp, direction: sortSwitch};
 
           sortBy({column: temp, direction: sortSwitch});
-
+          saveStorage()
           tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((cell, number) => {
 
             let temp = number + 1;
@@ -411,8 +411,9 @@
 
     const getStorage = () => {
       const empty = createEmptyObject();
-      const storage = localStorage.getItem(nameApp) ?
+      let storage = localStorage.getItem(nameApp) ?
         localStorage.getItem(nameApp) : localStorage.setItem(nameApp, empty);
+      if (!storage) storage = localStorage.getItem(nameApp);
       return JSON.parse(storage);
     };
 
@@ -431,10 +432,9 @@
     };
 
     const renderContacts = (storage) => {
-      if (storage.data.length === 0) return;
 
-      while(list.firstChild){
-        list.removeChild(list.firstChild)
+      while (list.firstChild) {
+        list.removeChild(list.firstChild);
       }
 
       Object.entries(storage.data).forEach(([index, value]) => {
@@ -472,7 +472,7 @@
 
     const handleStorage = () => {
       const storage = getStorage();
-
+      if (storage.data.length === 0) return;
       renderContacts(storage);
       handleSorting(storage.sort);
     };

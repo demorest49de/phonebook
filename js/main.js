@@ -251,7 +251,7 @@
     btnAdd.addEventListener('click', () => {
       const addBtn = form.querySelector('button.btn-primary');
       form.querySelector('.form-title').textContent = 'Добавить контакт';
-      console.log(': ', addBtn);
+      
       addBtn.textContent = 'Добавить';
       formOverlay.classList.add('is-visible');
     });
@@ -344,24 +344,23 @@
     tHead.querySelectorAll('tr th:not(:nth-child(1))')
       .forEach((thCell, column) => {
         thCell.addEventListener('click', () => {
-          console.log(thCell.textContent);
+
           const sortSwitch = thCell.classList.toggle('th-sort-asc');
           thCell.classList.toggle('th-sort-desc', !sortSwitch);
 
-          let temp = column + 1;
 
           const storage = getStorage();
-          storage.sort = {column: temp, direction: sortSwitch};
+          storage.sort = {column: column + 1, direction: sortSwitch};
 
-          sortBy({column: temp, direction: sortSwitch});
-          saveStorage()
-          tHead.querySelectorAll('tr th:not(:nth-child(1))').forEach((cell, number) => {
+          sortBy(storage.sort);
+          saveStorage(storage);
+          tHead.querySelectorAll('tr th:not(:nth-child(1))')
+            .forEach((thCell, number) => {
 
-            let temp = number + 1;
-            if (column + 1 !== temp) {
-              cell.classList.remove('th-sort-asc', 'th-sort-desc');
-            }
-          });
+              if (number !== column) {
+                thCell.classList.remove('th-sort-asc', 'th-sort-desc');
+              }
+            });
         });
       });
 
@@ -373,7 +372,7 @@
         const title = form.querySelector('.form-title');
         title.textContent = 'Изменить контакт';
         const saveBtn = form.querySelector('button.btn-primary');
-        console.log(': ', saveBtn);
+
         saveBtn.textContent = 'Сохранить';
         const id = target.closest('.contact').querySelector('.delete[data-id]').getAttribute('data-id');
 
@@ -396,6 +395,7 @@
     const sortBy = ({column, direction}) => {
       const dirModifier = direction ? 1 : -1;
       const rows = [...list.childNodes];
+
       const sortedRows = rows.sort((a, b) => {
         const aText = a.childNodes[column].textContent.trim().toLowerCase();
         const bText = b.childNodes[column].textContent.trim().toLowerCase();

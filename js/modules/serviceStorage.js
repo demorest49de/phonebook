@@ -1,15 +1,10 @@
-import render from "./render";
-
+import render from "./render.js";
 const {renderContacts} = render;
 
-import sort from "./sort";
-
+import sort from "./sort.js";
 const {handleSorting} = sort;
 
-import {mainVars} from "../main.js";
-const {tHead, list, logo, btnAdd, btnDel, formOverlay, form, nameApp} = mainVars;
-
-const getStorage = () => {
+const getStorage = (nameApp) => {
   const empty = createEmptyObject();
   let storage = localStorage.getItem(nameApp) ?
     localStorage.getItem(nameApp) : localStorage.setItem(nameApp, empty);
@@ -17,7 +12,7 @@ const getStorage = () => {
   return JSON.parse(storage);
 };
 
-const saveStorage = (storage) => {
+const saveStorage = (storage, nameApp) => {
   localStorage.setItem(nameApp, JSON.stringify(storage));
 };
 
@@ -30,20 +25,21 @@ const createEmptyObject = () => {
     },
   });
 };
-const removeContactFromStorage = (id) => {
-  const storage = getStorage();
+
+const removeContactFromStorage = (id, nameApp) => {
+  const storage = getStorage(nameApp);
 
   const data = storage.data;
   const result = data.filter(x => x.id !== id);
   storage.data = result;
-  saveStorage(storage);
+  saveStorage(storage, nameApp);
 };
 
-const handleStorage = (tHead, list) => {
-  const storage = getStorage();
+const handleStorage = ($) => {
+  const storage = getStorage($.nameApp);
   if (storage.data.length === 0) return;
-  renderContacts(storage, list);
-  handleSorting(storage.sort, tHead);
+  renderContacts(storage, $);
+  handleSorting(storage.sort, $);
 };
 
 export default {

@@ -1,16 +1,13 @@
 import serviceStorage from './modules/serviceStorage.js';
-import createElement from './modules/createElement';
 import control from './modules/control.js';
-import render from "./modules/render";
-import sort from "./modules/sort";
+import render from "./modules/render.js";
+import sort from "./modules/sort.js";
 
 const {sortColumnUpDown} = sort;
 
 const {renderPhonebook} = render;
 
 const {handleStorage} = serviceStorage;
-
-const {} = createElement;
 
 const {
   openForm, closeForm, toggleDelButton, removeRow, hoverRows, saveEditformData, editRow
@@ -22,49 +19,28 @@ const {
     const app = document.querySelector(selectorApp);
     const phonebook = renderPhonebook(app, title);
     const {tHead, list, logo, btnAdd, btnDel, formOverlay, form} = phonebook;
-
-    const mainVars = new mainVars(tHead, list, logo, btnAdd, btnDel, formOverlay, form, nameApp);
+    const mainVars = {tHead, list, logo, btnAdd, btnDel, formOverlay, form, nameApp, title};
 
     // Функционал
 
-    openForm(btnAdd, form, formOverlay);
+    openForm(mainVars);
 
-    closeForm(formOverlay);
+    closeForm(mainVars);
 
-    toggleDelButton(btnDel);
+    toggleDelButton(mainVars);
 
-    removeRow(list);
+    removeRow(mainVars);
 
-    hoverRows(list, logo);
+    hoverRows(mainVars);
 
-    saveEditformData(form, list, formOverlay, nameApp);
+    saveEditformData(mainVars);
 
-    editRow(list, formOverlay, form);
+    editRow(mainVars);
 
-    sortColumnUpDown(tHead);
+    sortColumnUpDown(mainVars);
 
-    handleStorage(tHead, list);
+    handleStorage(mainVars);
   };
 
   window.phoneBookInit = init;
-}
-
-export class mainVars {
-  constructor(tHead,
-              list,
-              logo,
-              btnAdd,
-              btnDel,
-              formOverlay,
-              form,
-              nameApp) {
-    this.tHead = tHead;
-    this.list = list;
-    this.logo = logo;
-    this.btnAdd = btnAdd;
-    this.btnDel = btnDel;
-    this.formOverlay = formOverlay;
-    this.form = form;
-    this.nameApp = nameApp;
-  }
 }

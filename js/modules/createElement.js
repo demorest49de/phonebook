@@ -19,6 +19,7 @@ const createLogo = (title) => {
   const h1 = document.createElement('h1');
   h1.classList.add('logo');
   h1.textContent = `Телефонный справочник. ${title}`;
+  console.log(': ',title);
   return h1;
 };
 

@@ -1,4 +1,5 @@
-import createElement from "./createElement";
+import createElement from "./createElement.js";
+
 
 const {
   createTable, createMain, createButtonsGroup, createForm, createHeader, createLogo, createFooter, createRow
@@ -39,16 +40,16 @@ const renderPhonebook = (app, title) => {
   };
 };
 
-const renderContacts = (storage, list) => {
+const renderContacts = (storage, $) => {
 
-  while (list.firstChild) {
-    list.removeChild(list.firstChild);
+  while ($.list.firstChild) {
+    $.list.removeChild($.list.firstChild);
   }
 
   Object.entries(storage.data).forEach(([index, value]) => {
     const {id, name, sirname, phone} = value;
     const row = createRow({id, name, sirname, phone});
-    list.append(row);
+    $.list.append(row);
   });
 };
 

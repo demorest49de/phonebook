@@ -1,9 +1,7 @@
 import serviceStorage from './modules/serviceStorage.js';
 import control from './modules/control.js';
 import render from "./modules/render.js";
-import sort from "./modules/sort.js";
-
-const {sortColumnUpDown} = sort;
+import {sortColumnUpDown} from "./modules/sort.js";
 
 const {renderPhonebook} = render;
 

@@ -1,5 +1,5 @@
 import render from "./render.js";
-import sort from "./sort.js";
+import {handleSorting} from "./sort.js";
 
 const getStorage = (nameApp) => {
   const empty = createEmptyObject();
@@ -27,8 +27,7 @@ const removeContactFromStorage = (id, nameApp) => {
   const storage = getStorage(nameApp);
 
   const data = storage.data;
-  const result = data.filter(x => x.id !== id);
-  storage.data = result;
+  storage.data = data.filter(x => x.id !== id);
   saveStorage(storage, nameApp);
 };
 
@@ -37,7 +36,7 @@ const handleStorage = ($) => {
   const storage = getStorage($.nameApp);
   if (storage.data.length === 0) return;
   render.renderContacts(storage, $);
-  sort.handleSorting(storage.sort, $);
+  handleSorting(storage.sort, $);
 };
 
 export default {

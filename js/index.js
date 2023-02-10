@@ -7,8 +7,6 @@ const {sortColumnUpDown} = sort;
 
 const {renderPhonebook} = render;
 
-const {handleStorage} = serviceStorage;
-
 const {
   openForm, closeForm, toggleDelButton, removeRow, hoverRows, saveEditformData, editRow
 } = control;
@@ -39,7 +37,7 @@ const {
 
     sortColumnUpDown(mainVars);
 
-    handleStorage(mainVars);
+    serviceStorage.handleStorage(mainVars)
   };
 
   window.phoneBookInit = init;

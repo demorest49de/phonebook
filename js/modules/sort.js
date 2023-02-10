@@ -1,5 +1,4 @@
 import serviceStorage from "./serviceStorage.js";
-const {saveStorage, getStorage} = serviceStorage;
 
 const sortColumnUpDown = ($) => {
   $.tHead.querySelectorAll('tr th:not(:nth-child(1))')
@@ -10,11 +9,11 @@ const sortColumnUpDown = ($) => {
         thCell.classList.toggle('th-sort-desc', !sortSwitch);
 
 
-        const storage = getStorage($.nameApp);
+        const storage = serviceStorage.getStorage($.nameApp);
         storage.sort = {column: column + 1, direction: sortSwitch};
 
         sortBy(storage.sort, $);
-        saveStorage(storage, $.nameApp);
+        serviceStorage.saveStorage(storage, $.nameApp);
         $.tHead.querySelectorAll('tr th:not(:nth-child(1))')
           .forEach((thCell, number) => {
 

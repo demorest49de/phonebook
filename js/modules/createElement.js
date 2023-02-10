@@ -3,6 +3,7 @@ const createContainer = () => {
   container.classList.add('container');
   return container;
 };
+
 const createHeader = () => {
   const header = document.createElement('div');
   header.classList.add('header');
@@ -13,12 +14,14 @@ const createHeader = () => {
 
   return header;
 };
+
 const createLogo = (title) => {
   const h1 = document.createElement('h1');
   h1.classList.add('logo');
   h1.textContent = `Телефонный справочник. ${title}`;
   return h1;
 };
+
 const createMain = () => {
   const main = document.createElement('main');
   const mainContainer = createContainer();
@@ -26,6 +29,7 @@ const createMain = () => {
   main.mainContainer = mainContainer;
   return main;
 };
+
 const createButtonsGroup = params => {
   const btnWrapper = document.createElement('div');
   btnWrapper.classList.add('btn-wrapper');
@@ -46,6 +50,7 @@ const createButtonsGroup = params => {
     btns,
   };
 };
+
 const createSingleButton = ({className, type, text}) => {
   const button = document.createElement('button');
   button.className = className;
@@ -54,6 +59,7 @@ const createSingleButton = ({className, type, text}) => {
 
   return button;
 };
+
 const createTable = () => {
   const table = document.createElement('table');
 
@@ -75,6 +81,7 @@ const createTable = () => {
 
   return table;
 };
+
 const createForm = () => {
   const overlay = document.createElement('div');
   overlay.classList.add('form-overlay');
@@ -125,6 +132,7 @@ const createForm = () => {
     btns: buttonsGroup,
   };
 };
+
 const createFooter = (title) => {
   const footer = document.createElement('footer');
   const footerContainer = createContainer();
@@ -136,6 +144,7 @@ const createFooter = (title) => {
   footer.footerContainer.append(pText);
   return footer;
 };
+
 const createRow = ({id, name: firstName, sirname, phone}) => {
   const tr = document.createElement('tr');
   tr.classList.add('contact');
@@ -180,6 +189,15 @@ const createRow = ({id, name: firstName, sirname, phone}) => {
   return tr;
 };
 
+const createId = () => {
+  let ID = ``;
+  const characters = '0123456789';
+  for (let i = 0; i < 9; i++) {
+    ID += characters.charAt(Math.floor(Math.random() * 10));
+  }
+  return ID;
+};
+
 export default {
   createContainer,
   createHeader,
@@ -190,6 +208,6 @@ export default {
   createTable,
   createForm,
   createFooter,
-  renderPhonebook,
   createRow,
+  createId,
 };

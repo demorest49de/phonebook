@@ -1,7 +1,7 @@
 import createElement from "./createElement";
 
 const {
-  createTable, createMain, createButtonsGroup, createForm, createHeader, createLogo, createFooter,
+  createTable, createMain, createButtonsGroup, createForm, createHeader, createLogo, createFooter, createRow
 } = createElement;
 
 const renderPhonebook = (app, title) => {
@@ -39,6 +39,20 @@ const renderPhonebook = (app, title) => {
   };
 };
 
+const renderContacts = (storage, list) => {
+
+  while (list.firstChild) {
+    list.removeChild(list.firstChild);
+  }
+
+  Object.entries(storage.data).forEach(([index, value]) => {
+    const {id, name, sirname, phone} = value;
+    const row = createRow({id, name, sirname, phone});
+    list.append(row);
+  });
+};
+
 export default {
   renderPhonebook,
-}
+  renderContacts
+};

@@ -1,6 +1,6 @@
 import serviceStorage from "./serviceStorage.js";
 
-const sortColumnUpDown = ($) => {
+export const sortColumnUpDown = ($) => {
   $.tHead.querySelectorAll('tr th:not(:nth-child(1))')
     .forEach((thCell, column) => {
       thCell.addEventListener('click', () => {
@@ -43,14 +43,10 @@ const sortBy = ({column, direction}, $) => {
   $.list.append(...sortedRows);
 };
 
-const handleSorting = (sortSettings, $) => {
+export const handleSorting = (sortSettings, $) => {
 
   sortBy(sortSettings, $);
 
   const th = $.tHead.querySelector(`th:nth-child(${sortSettings.column + 1})`);
   sortSettings.direction ? th.classList.add('th-sort-asc') : th.classList.add('th-sort-desc');
-};
-
-export default {
-  sortColumnUpDown, handleSorting
 };

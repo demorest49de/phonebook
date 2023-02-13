@@ -6,7 +6,7 @@ import {sortColumnUpDown} from "./modules/sort.js";
 const {renderPhonebook} = render;
 
 const {
-  openForm, closeForm, toggleDelButton, removeRow, hoverRows, saveEditformData, editRow
+  openForm, closeForm, toggleDelButton, removeRow, hoverRows, submitFormData, editRow
 } = control;
 
 {
@@ -29,7 +29,7 @@ const {
 
     hoverRows(mainVars);
 
-    saveEditformData(mainVars);
+    submitFormData(mainVars);
 
     editRow(mainVars);
 

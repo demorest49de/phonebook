@@ -151,6 +151,6 @@ export default {
   toggleDelButton,
   removeRow,
   hoverRows,
-  saveEditformData,
+  submitFormData: saveEditformData,
   editRow
 };

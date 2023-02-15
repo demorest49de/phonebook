@@ -78,7 +78,7 @@ const hoverRow = (allRows, logo) => {
   });
 };
 
-const saveEditformData = ($) => {
+const submitFormData = ($) => {
   $.form.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -151,6 +151,6 @@ export default {
   toggleDelButton,
   removeRow,
   hoverRows,
-  submitFormData: saveEditformData,
+  submitFormData,
   editRow
 };

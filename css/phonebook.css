@@ -89,12 +89,12 @@ td {
     left: 50%;
     position: absolute;
     top: 0px;
-    opacity: 0;
     transform: translateX(-50%);
     transition-property: top, opacity;
     transition-duration: 0.5s;
     transition-timing-function: ease-in-out;
     z-index: 2;
+    border-radius: 10px;
 }
 
 
@@ -130,7 +130,7 @@ td {
 
 .form-overlay.is-visible .form {
     opacity: 1;
-    top: 40px;
+    top: 60px;
 }
 
 .close {

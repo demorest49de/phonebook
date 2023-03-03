@@ -82,7 +82,7 @@ td {
 
 .form {
     padding: 30px 50px;
-    background-color: #fff;
+    background-color: #ffffff;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
     left: 50%;
     position: absolute;
@@ -95,14 +95,9 @@ td {
     border-radius: 10px;
 }
 
-
-.form-title {
-    margin-top: 0;
-    padding-bottom: 20px;
-}
-
-.form-label {
-    width: 80px;
+.form-overlay.is-visible .form {
+    opacity: 1;
+    top: 60px;
 }
 
 
@@ -126,9 +121,14 @@ td {
     visibility: visible;
 }
 
-.form-overlay.is-visible .form {
-    opacity: 1;
-    top: 60px;
+
+.form-title {
+    margin-top: 0;
+    padding-bottom: 20px;
+}
+
+.form-label {
+    width: 80px;
 }
 
 .close {

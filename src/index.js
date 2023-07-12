@@ -4,11 +4,8 @@ import render from "./script/render.js";
 import {sortColumnUpDown} from "./script/sort.js";
 
 
-import './css/global.css';
-import './css/phonebook.css';
+import './scss/index.scss';
 import './css/style.css';
-import './css/bootstrap.css';
-import './css/normalize.css';
 
 const {renderPhonebook} = render;
 

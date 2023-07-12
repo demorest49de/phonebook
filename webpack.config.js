@@ -3,11 +3,13 @@ const mode = process.env.NODE_ENV || 'development';
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const target = mode === 'development' ? 'web' : 'browserslist';
+const devtool = mode === 'development' ? 'source-map' : undefined;
 
 module.exports = {
     mode,
     target,
-    devtool: 'source-map', devServer: {
+    devtool,
+    devServer: {
         hot: true,
     }, entry: './src/index.js', output: {
         filename: "[name][contenthash].js", path: path.resolve(__dirname, 'dist'),

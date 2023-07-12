@@ -1,5 +1,5 @@
-import render from "./render.js";
-import {handleSorting} from "./sort.js";
+import render from "./render";
+import {handleSorting} from "./sort";
 
 const getStorage = (nameApp) => {
   const empty = createEmptyObject();

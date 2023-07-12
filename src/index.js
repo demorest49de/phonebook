@@ -1,7 +1,7 @@
-import serviceStorage from './script/serviceStorage.js';
-import control from './script/control.js';
-import render from "./script/render.js";
-import {sortColumnUpDown} from "./script/sort.js";
+import serviceStorage from './script/serviceStorage';
+import control from './script/control';
+import render from "./script/render";
+import {sortColumnUpDown} from "./script/sort";
 
 
 import './scss/index.scss';

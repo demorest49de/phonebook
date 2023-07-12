@@ -1,7 +1,7 @@
-import serviceStorage from "./serviceStorage.js";
-import render from "./render.js";
-import createElement from "./createElement.js";
-import {handleSorting} from "./sort.js";
+import serviceStorage from "./serviceStorage";
+import render from "./render";
+import createElement from "./createElement.mjs";
+import {handleSorting} from "./sort";
 
 
 const {createId, createRow,} = createElement;

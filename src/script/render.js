@@ -1,4 +1,4 @@
-import createElement from "./createElement.js";
+import createElement from "./createElement.mjs";
 
 
 const {

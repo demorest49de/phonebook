@@ -1,4 +1,4 @@
-import serviceStorage from "./serviceStorage.js";
+import serviceStorage from "./serviceStorage";
 
 export const sortColumnUpDown = ($) => {
   $.tHead.querySelectorAll('tr th:not(:nth-child(1))')

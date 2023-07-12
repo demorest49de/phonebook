@@ -11,7 +11,7 @@ module.exports = {
     devtool,
     devServer: {
         hot: true,
-    }, entry: './src/index.js',
+    }, entry: ["@babel/polyfill", "./src/index.js"],
     output: {
         filename: "[name][contenthash].js", path: path.resolve(__dirname, 'dist'),
         clean: true,
@@ -43,6 +43,16 @@ module.exports = {
             {
                 test: /\.(woff2|woff|eot|ttf|otf)$/i,
                 type: "asset/resource",
+            },
+            {
+                test: /\.m?js$/i,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        cacheDirectory: true,
+                    }
+                },
             }
         ]
     }

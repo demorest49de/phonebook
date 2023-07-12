@@ -11,15 +11,19 @@ module.exports = {
     devtool,
     devServer: {
         hot: true,
-    }, entry: './src/index.js', output: {
+    }, entry: './src/index.js',
+    output: {
         filename: "[name][contenthash].js", path: path.resolve(__dirname, 'dist'),
         clean: true,
+        assetModuleFilename: "assets/[hash][ext][query]",
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: "./src/index.html",
         }),
-        new MiniCssExtractPlugin(),
+        new MiniCssExtractPlugin({
+            filename: '[name][contenthash].css',
+        }),
     ],
     module: {
         rules: [
@@ -31,6 +35,14 @@ module.exports = {
                     'postcss-loader',
                     'sass-loader',
                 ]
+            },
+            {
+                test: /\.(jpg|jpeg|png|svg|gif)$/i,
+                type: "asset/resource",
+            },
+            {
+                test: /\.(woff2|woff|eot|ttf|otf)$/i,
+                type: "asset/resource",
             }
         ]
     }

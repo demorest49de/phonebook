@@ -11,7 +11,7 @@ const renderPhonebook = (app, title) => {
   const main = createMain();
   const buttonsGroup = createButtonsGroup([
     {
-      className: 'btn btn-primary mr-3 js-add',
+      className: 'btn btn-primary mr-3 script-add',
       type: 'button',
       text: 'Добавить',
     },

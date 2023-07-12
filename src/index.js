@@ -1,7 +1,14 @@
-import serviceStorage from './modules/serviceStorage.js';
-import control from './modules/control.js';
-import render from "./modules/render.js";
-import {sortColumnUpDown} from "./modules/sort.js";
+import serviceStorage from './script/serviceStorage.js';
+import control from './script/control.js';
+import render from "./script/render.js";
+import {sortColumnUpDown} from "./script/sort.js";
+
+
+import './css/global.css';
+import './css/phonebook.css';
+import './css/style.css';
+import './css/bootstrap.css';
+import './css/normalize.css';
 
 const {renderPhonebook} = render;
 
